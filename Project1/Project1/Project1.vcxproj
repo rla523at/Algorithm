@@ -18,6 +18,13 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="SRC\14681.cpp" />
+    <ClCompile Include="SRC\1891.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="INC\Exception.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -145,14 +152,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="14681.cpp" />
-    <ClCompile Include="소스.cpp" />
-    <ClCompile Include="1891.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Exception.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
