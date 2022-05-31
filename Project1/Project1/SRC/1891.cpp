@@ -29,13 +29,13 @@ public:
     }
 
 public: //Command
-    void move(const int horizontal_movement, const int vertical_movement)
+    void move(const long long horizontal_movement, const long long vertical_movement)
     {
-        const auto index_pos = static_cast<int>(this->quadrants_.size() - 1);
+        const auto index_pos = static_cast<long long>(this->quadrants_.size() - 1);
 
         if (horizontal_movement > 0)
         {
-            for (int i = 0; i < horizontal_movement; ++i)
+            for (long long i = 0; i < horizontal_movement; ++i)
             {
                 this->move_right();
             }
@@ -44,7 +44,7 @@ public: //Command
         {
             const auto num_movement = std::abs(horizontal_movement);
 
-            for (int i = 0; i < num_movement; ++i)
+            for (long long i = 0; i < num_movement; ++i)
             {
                 this->move_left();
             }
@@ -52,7 +52,7 @@ public: //Command
 
         if (vertical_movement > 0)
         {
-            for (int i = 0; i < vertical_movement; ++i)
+            for (long long i = 0; i < vertical_movement; ++i)
             {
                 this->move_up();
             }
@@ -61,7 +61,7 @@ public: //Command
         {
             const auto num_movement = std::abs(vertical_movement);
 
-            for (int i = 0; i < num_movement; ++i)
+            for (long long i = 0; i < num_movement; ++i)
             {
                 this->move_down();
             }
@@ -81,7 +81,7 @@ public: //Query
 private:
     void move_right(void)
     {
-        auto pos = static_cast<int>(this->quadrants_.size() - 1);
+        auto pos = static_cast<long long>(this->quadrants_.size() - 1);
 
         while (true)
         {
@@ -113,7 +113,7 @@ private:
 
     void move_left(void)
     {
-        auto pos = static_cast<int>(this->quadrants_.size() - 1);
+        auto pos = static_cast<long long>(this->quadrants_.size() - 1);
 
         while (true)
         {
@@ -145,7 +145,7 @@ private:
 
     void move_up(void)
     {
-        auto pos = static_cast<int>(this->quadrants_.size() - 1);
+        auto pos = static_cast<long long>(this->quadrants_.size() - 1);
 
         while (true)
         {
@@ -177,7 +177,7 @@ private:
 
     void move_down(void)
     {
-        auto pos = static_cast<int>(this->quadrants_.size() - 1);
+        auto pos = static_cast<long long>(this->quadrants_.size() - 1);
 
         while (true)
         {
@@ -232,7 +232,7 @@ int main(void)
     std::string start_quadrants;
     std::cin >> start_quadrants;
 
-    int horizontal_movement, vertical_movement;
+    long long horizontal_movement, vertical_movement;
     std::cin >> horizontal_movement >> vertical_movement;
 
     try
