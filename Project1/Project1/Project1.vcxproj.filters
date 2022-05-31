@@ -21,6 +21,9 @@
     <ClCompile Include="SRC\14681.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="1891_백준용.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INC\Exception.h">

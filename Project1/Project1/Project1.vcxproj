@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="SRC\14681.cpp" />
     <ClCompile Include="SRC\1891.cpp" />
+    <ClCompile Include="1891_백준용.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INC\Exception.h" />
