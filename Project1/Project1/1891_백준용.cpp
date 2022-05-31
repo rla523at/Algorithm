@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <bitset>
 #include <cctype>
 #include <iostream>
 #include <string>
@@ -56,179 +57,26 @@ public: //Command
 
 		if (horizontal_movement > 0)
 		{
-			for (long long i = 0; i < horizontal_movement; ++i)
-			{
-				this->move_right();
-			}
+			this->move_right(horizontal_movement);
 		}
 		else
 		{
 			const auto num_movement = std::abs(horizontal_movement);
-
-			for (long long i = 0; i < num_movement; ++i)
-			{
-				this->move_left();
-			}
+			this->move_left(num_movement);
 		}
 
 		if (vertical_movement > 0)
 		{
-			for (long long i = 0; i < vertical_movement; ++i)
-			{
-				this->move_up();
-			}
+			this->move_up(vertical_movement);
 		}
 		else
 		{
 			const auto num_movement = std::abs(vertical_movement);
-
-			for (long long i = 0; i < num_movement; ++i)
-			{
-				this->move_down();
-			}
+			this->move_down(num_movement);
 		}
 	}
 
 public: //Query
-	void print(void) const
-	{
-		for (const auto c : this->quadrants_)
-		{
-			std::cout << c;
-		}
-		std::cout << "\n";
-	}
-
-private:
-	void move_right(void)
-	{
-		auto pos = static_cast<long long>(this->quadrants_.size() - 1);
-
-		while (true)
-		{
-			const auto quadrant_index = this->quadrants_[pos];
-
-			switch (quadrant_index)
-			{
-			case '1':
-				this->quadrants_[pos] = '2';
-				pos--;
-				break;
-			case '2':
-				this->quadrants_[pos] = '1';
-				return;
-			case '3':
-				this->quadrants_[pos] = '4';
-				return;
-			case '4':
-				this->quadrants_[pos] = '3';
-				pos--;
-				break;
-			default:
-				ms::exception("Error");
-			}
-
-			ms::require(pos >= 0, "position should be positive");
-		}
-	}
-
-	void move_left(void)
-	{
-		auto pos = static_cast<long long>(this->quadrants_.size() - 1);
-
-		while (true)
-		{
-			const auto quadrant_index = this->quadrants_[pos];
-
-			switch (quadrant_index)
-			{
-			case '1':
-				this->quadrants_[pos] = '2';
-				return;
-			case '2':
-				this->quadrants_[pos] = '1';
-				pos--;
-				break;
-			case '3':
-				this->quadrants_[pos] = '4';
-				pos--;
-				break;
-			case '4':
-				this->quadrants_[pos] = '3';
-				return;
-			default:
-				ms::exception("Error");
-			}
-
-			ms::require(pos >= 0, "position should be positive");
-		}
-	}
-
-	void move_up(void)
-	{
-		auto pos = static_cast<long long>(this->quadrants_.size() - 1);
-
-		while (true)
-		{
-			const auto quadrant_index = this->quadrants_[pos];
-
-			switch (quadrant_index)
-			{
-			case '1':
-				this->quadrants_[pos] = '4';
-				pos--;
-				break;
-			case '2':
-				this->quadrants_[pos] = '3';
-				pos--;
-				break;
-			case '3':
-				this->quadrants_[pos] = '2';
-				return;
-			case '4':
-				this->quadrants_[pos] = '1';
-				return;
-			default:
-				ms::exception("Error");
-			}
-
-			ms::require(pos >= 0, "position should be positive");
-		}
-	}
-
-	void move_down(void)
-	{
-		auto pos = static_cast<long long>(this->quadrants_.size() - 1);
-
-		while (true)
-		{
-			const auto quadrant_index = this->quadrants_[pos];
-
-			switch (quadrant_index)
-			{
-			case '1':
-				this->quadrants_[pos] = '4';
-				return;
-			case '2':
-				this->quadrants_[pos] = '3';
-				return;
-			case '3':
-				this->quadrants_[pos] = '2';
-				pos--;
-				break;
-			case '4':
-				this->quadrants_[pos] = '1';
-				pos--;
-				break;
-			default:
-				ms::exception("Error");
-			}
-
-			ms::require(pos >= 0, "position should be positive");
-		}
-	}
-
-
 	bool is_valid(const std::string_view quadrants) const
 	{
 		for (const auto c : quadrants)
@@ -244,7 +92,217 @@ private:
 		return true;
 	}
 
+
+	void print(void) const
+	{
+		for (const auto c : this->quadrants_)
+		{
+			std::cout << c;
+		}
+
+		std::cout << "\n";
+	}
+
 private:
+	void move_right(const size_t num_movement)
+	{		
+		std::bitset<this->max_bit> binary(num_movement);
+
+		for (size_t i = 0; i < this->max_bit; ++i)
+		{
+			if (binary[i])
+			{
+				bool is_end = false;
+				auto pos = i;
+
+				while (true)
+				{
+					ms::require(pos < this->quadrants_.size(), "pos can't exceed given ragne");
+
+					auto& quadrant_at_pos = this->quadrant_at(pos);
+					switch (quadrant_at_pos)
+					{
+					case '1':
+						quadrant_at_pos = '2';
+						pos++;
+						break;
+					case '2':
+						quadrant_at_pos = '1';
+						is_end = true;
+						break;
+					case '3':
+						quadrant_at_pos = '4';
+						is_end = true;
+						break;
+					case '4':
+						quadrant_at_pos = '3';
+						pos++;
+						break;
+					default:
+						ms::exception("Error");
+					}					
+
+					if (is_end)
+					{
+						break;
+					}
+				}
+			}
+		}		
+	}
+
+	void move_left(const size_t num_movement)
+	{
+		std::bitset<this->max_bit> binary(num_movement);
+
+		for (size_t i = 0; i < this->max_bit; ++i)
+		{
+			if (binary[i])
+			{
+				bool is_end = false;
+				auto pos = i;
+
+				while (true)
+				{
+					ms::require(pos < this->quadrants_.size(), "pos can't exceed given ragne");
+
+					auto& quadrant_at_pos = this->quadrant_at(pos);
+					switch (quadrant_at_pos)
+					{
+					case '1':
+						quadrant_at_pos = '2';
+						is_end = true;
+						break;
+					case '2':
+						quadrant_at_pos = '1';
+						pos++;
+						break;
+					case '3':
+						quadrant_at_pos = '4';
+						pos++;
+						break;
+					case '4':
+						quadrant_at_pos = '3';
+						pos++;
+						is_end = true;
+						break;
+					default:
+						ms::exception("Error");
+					}
+
+					if (is_end)
+					{
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	void move_up(const size_t num_movement)
+	{
+		std::bitset<this->max_bit> binary(num_movement);
+
+		for (size_t i = 0; i < this->max_bit; ++i)
+		{
+			if (binary[i])
+			{
+				bool is_end = false;
+				auto pos = i;
+
+				while (true)
+				{
+					ms::require(pos < this->quadrants_.size(), "pos can't exceed given ragne");
+
+					auto& quadrant_at_pos = this->quadrant_at(pos);
+
+					switch (quadrant_at_pos)
+					{
+					case '1':
+						quadrant_at_pos = '4';
+						pos++;
+						break;
+					case '2':
+						quadrant_at_pos = '3';
+						pos++;
+						break;
+					case '3':
+						quadrant_at_pos = '2';
+						is_end = true;
+						break;
+					case '4':
+						quadrant_at_pos = '1';
+						is_end = true;
+						break;
+					default:
+						ms::exception("Error");
+					}
+
+					if (is_end)
+					{
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	void move_down(const size_t num_movement)
+	{
+		std::bitset<this->max_bit> binary(num_movement);
+
+		for (size_t i = 0; i < this->max_bit; ++i)
+		{
+			if (binary[i])
+			{
+				bool is_end = false;
+				auto pos = i;
+
+				while (true)
+				{
+					ms::require(pos < this->quadrants_.size(), "pos can't exceed given ragne");
+
+					auto& quadrant_at_pos = this->quadrant_at(pos);
+
+					switch (quadrant_at_pos)
+					{
+					case '1':
+						quadrant_at_pos = '4';
+						is_end = true;
+						break;
+					case '2':
+						quadrant_at_pos = '3';
+						is_end = true;
+						break;
+					case '3':
+						quadrant_at_pos = '2';
+						pos++;
+						break;
+					case '4':
+						quadrant_at_pos = '1';
+						pos++;
+						break;
+					default:
+						ms::exception("Error");
+					}
+
+					if (is_end)
+					{
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	char& quadrant_at(const size_t pos)
+	{
+		const auto index_pos = this->quadrants_.size() - 1 - pos;
+		return this->quadrants_[index_pos];
+	}
+
+private:
+	static constexpr unsigned short max_bit = 51;
 	std::vector<char> quadrants_;
 };
 
